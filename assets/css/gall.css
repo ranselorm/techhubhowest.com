@@ -79,10 +79,10 @@ h1 {
   }
 }
 
-@media (max-width: 900px) {
+@media (min-width: 800px) {
   .modal img {
-    width: 100%;
-    object-fit: fill;
+    width: 50%;
+    object-fit: cover;
   }
 }
 @media (max-width: 950px) {

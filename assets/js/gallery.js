@@ -1,37 +1,65 @@
-var gallery = document.querySelector("#gallery");
-var getVal = function (elem, style) {
-  return parseInt(window.getComputedStyle(elem).getPropertyValue(style));
-};
-var getHeight = function (item) {
-  return item.querySelector(".content").getBoundingClientRect().height;
-};
-var resizeAll = function () {
-  var altura = getVal(gallery, "grid-auto-rows");
-  var gap = getVal(gallery, "grid-row-gap");
-  gallery.querySelectorAll(".gallery-item").forEach(function (item) {
-    var el = item;
-    el.style.gridRowEnd =
-      "span " + Math.ceil((getHeight(item) + gap) / (altura + gap));
+const images = document.querySelectorAll(".gallery__item img");
+let imgIndex;
+let imgSrc;
+// get images src onclick
+images.forEach((img, i) => {
+  img.addEventListener("click", (e) => {
+    imgSrc = e.target.src;
+    //run modal function
+    imgModal(imgSrc);
+    //index of the next image
+    imgIndex = i;
   });
+});
+//creating the modal
+let imgModal = (src) => {
+  const modal = document.createElement("div");
+  modal.setAttribute("class", "modal");
+  //add modal to the parent element
+  document.querySelector(".main").append(modal);
+  //adding image to modal
+  const newImage = document.createElement("img");
+  newImage.setAttribute("src", src);
+  //creating the close button
+  const closeBtn = document.createElement("i");
+  closeBtn.setAttribute("class", "fas fa-times closeBtn");
+  //close function
+  closeBtn.onclick = () => {
+    modal.remove();
+  };
+  //next and previous buttons
+  const nextBtn = document.createElement("i");
+  nextBtn.setAttribute("class", "fas fa-angle-right nextBtn");
+  // change the src of current image to the src of next image
+  nextBtn.onclick = () => {
+    newImage.setAttribute("src", nextImg());
+  };
+  const prevBtn = document.createElement("i");
+  prevBtn.setAttribute("class", "fas fa-angle-left prevBtn");
+  // change the src of current image to the src of pevious image
+  prevBtn.onclick = () => {
+    newImage.setAttribute("src", prevImg());
+  };
+  modal.append(newImage, closeBtn, nextBtn, prevBtn);
 };
-gallery.querySelectorAll("img").forEach(function (item) {
-  item.classList.add("byebye");
-  if (item.complete) {
-    console.log(item.src);
-  } else {
-    item.addEventListener("load", function () {
-      var altura = getVal(gallery, "grid-auto-rows");
-      var gap = getVal(gallery, "grid-row-gap");
-      var gitem = item.parentElement.parentElement;
-      gitem.style.gridRowEnd =
-        "span " + Math.ceil((getHeight(gitem) + gap) / (altura + gap));
-      item.classList.remove("byebye");
-    });
+//next image function
+let nextImg = () => {
+  imgIndex++;
+  //check if it is the the last image
+  if (imgIndex >= images.length) {
+    imgIndex = 0;
   }
-});
-window.addEventListener("resize", resizeAll);
-gallery.querySelectorAll(".gallery-item").forEach(function (item) {
-  item.addEventListener("click", function () {
-    item.classList.toggle("full");
-  });
-});
+  //return src of the new image
+  return images[imgIndex].src;
+};
+//previous image function
+let prevImg = () => {
+  imgIndex--;
+  console.log(imgIndex);
+  //check if it is the first image
+  if (imgIndex < 0) {
+    imgIndex = images.length - 1;
+  }
+  //return src of previous image
+  return images[imgIndex].src;
+};
