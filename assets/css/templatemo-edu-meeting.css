@@ -151,6 +151,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ---------------------------------------------------------------------------------- */
+.logo {
+  height: 0%;
+  width: 15%;
+  margin-top: 1.5%;
+}
+
 a {
   text-decoration: none !important;
   color: #3cf;
@@ -1879,5 +1886,11 @@ responsive
 
   .header-area .main-nav .nav li ul.sub-menu li a {
     color: #1f272b;
+  }
+
+  .logo {
+    height: 2%;
+    width: 40%;
+    margin-top: 5%;
   }
 }
